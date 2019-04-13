@@ -1,14 +1,33 @@
-import numpy as np
 import cv2
 
-img = cv2.imread('s1200.jpeg')
 
-blur = cv2.GaussianBlur(img, (9,9), 0)
-cv2.imshow('blur', blur)
+def main():
+    img = cv2.imread('../asdf.png', 0)
+    scale = 0.3
+    img = cv2.resize(img, (0, 0), fx=scale, fy=scale, interpolation=cv2.INTER_LANCZOS4)
 
-edges = cv2.Canny(blur, 100, 200)
+    blur_size = 5
+    blur = cv2.GaussianBlur(img, (blur_size, blur_size), 0)
+    cv2.imshow('blur', blur)
 
-cv2.imshow('edges', edges)
+    edges = cv2.Canny(blur, 100, 200)
 
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    components_number, labels = cv2.connectedComponents(edges)
+
+    components = [[] for i in range(components_number)]
+    for i, row in enumerate(labels):
+        for j, e in enumerate(row):
+            if e != 0:
+                components[e].append((i, j))
+
+    print(len(components))
+    print(components)
+
+    cv2.imshow('edges', edges)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+if __name__ == '__main__':
+    main()
