@@ -17,7 +17,7 @@ def main():
     q = 0
     max_height = 1200
     max_width = 1000
-    for file in os.listdir(path):
+    for file in sorted(os.listdir(path)):
         q += 1
         print('Number:', q)
         file = Path(file)
