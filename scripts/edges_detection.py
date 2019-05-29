@@ -2,8 +2,8 @@ import cv2
 
 
 def main():
-    img = cv2.imread('../example.tif', 0)
-    scale = 0.4
+    img = cv2.imread('../cropped.png', 0)
+    scale = 0.8
     img = cv2.resize(img, (0, 0), fx=scale, fy=scale, interpolation=cv2.INTER_LANCZOS4)
 
     blur_size = 15
