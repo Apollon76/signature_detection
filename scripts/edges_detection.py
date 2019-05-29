@@ -2,11 +2,11 @@ import cv2
 
 
 def main():
-    img = cv2.imread('../asdf.png', 0)
-    scale = 0.3
+    img = cv2.imread('../example.tif', 0)
+    scale = 0.4
     img = cv2.resize(img, (0, 0), fx=scale, fy=scale, interpolation=cv2.INTER_LANCZOS4)
 
-    blur_size = 5
+    blur_size = 15
     blur = cv2.GaussianBlur(img, (blur_size, blur_size), 0)
     cv2.imshow('blur', blur)
 
