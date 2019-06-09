@@ -1,5 +1,6 @@
 from typing import List
 
+import numpy as np
 import cv2
 from tqdm import tqdm
 
@@ -11,8 +12,12 @@ class FeatureExtractor:
     def fit(self, data, y):
         pass
 
-    def transform(self, images) -> List[List[float]]:
-        return [self.extract_from_image(image) for image in tqdm(images)]
+    def transform(self, images) -> np.ndarray:
+        data = np.array([self.extract_from_image(image) for image in tqdm(images)])
+        data[data == np.inf] = 0
+        data[data == -np.inf] = 0
+        data[data == np.nan] = 0
+        return data
 
     def fit_transform(self, data, y):
         self.fit(data, y)
