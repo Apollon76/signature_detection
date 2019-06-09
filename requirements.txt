@@ -1,3 +1,4 @@
+tqdm
 pandas
 scikit-learn
 opencv-python

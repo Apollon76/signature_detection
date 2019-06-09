@@ -58,7 +58,9 @@ def main():
     # img = cv2.imread('../cropped.png', 0)
     # img = cv2.imread('../bad_quality.jpg', 0)
     # img = cv2.imread('../many_signatures.jpg', 0)
-    img = cv2.imread('../data/00046211.tif', 0)
+    # img = cv2.imread('../data/00046211.tif', 0)
+    img = cv2.imread('../example.tif', 0)
+    print(img.shape)
     scale = 0.3
     img = cv2.resize(img, (0, 0), fx=scale, fy=scale, interpolation=cv2.INTER_LANCZOS4)
 

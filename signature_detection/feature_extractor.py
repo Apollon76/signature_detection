@@ -1,13 +1,24 @@
 from typing import List
 
 import cv2
+from tqdm import tqdm
 
 from signature_detection.point import Point
 from signature_detection.utils import get_bounding_box
 
 
 class FeatureExtractor:
-    def extract(self, img) -> List[float]:
+    def fit(self, data, y):
+        pass
+
+    def transform(self, images) -> List[List[float]]:
+        return [self.extract_from_image(image) for image in tqdm(images)]
+
+    def fit_transform(self, data, y):
+        self.fit(data, y)
+        return self.transform(data)
+
+    def extract_from_image(self, img) -> List[float]:
         scale = 0.3
         img = cv2.resize(img, (0, 0), fx=scale, fy=scale, interpolation=cv2.INTER_LANCZOS4)
 
