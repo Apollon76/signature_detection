@@ -1,4 +1,29 @@
+from typing import List
+
+import numpy as np
 import cv2
+
+from signature_detection.point import Point
+
+eps = 1e-3
+
+
+def count_salience(component: List[Point], img):
+    ddepth = cv2.CV_16S
+    grad_x = cv2.Sobel(img, ddepth, 1, 0, ksize=3, scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
+    grad_y = cv2.Sobel(img, ddepth, 0, 1, ksize=3, scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
+    result = 0.0
+    for i in range(len(component)):
+        x1, y1 = component[i].x, component[i].y
+        p1, q1 = grad_x[x1, y1], grad_y[x1, y1]
+        for j in range(i):
+            x2, y2 = component[j].x, component[j].y
+            p2, q2 = grad_x[x2, y2], grad_y[x2, y2]
+            den = (p1 * q2 - p2 * q1) ** 2
+            if abs(den) < eps:
+                continue
+            result += abs(4 * (p1 * (x2 - x1) + q1 * (y2 - y1)) * (p2 * (x1 - x2) + q2 * (y1 - y2)) / den)
+    return result
 
 
 def main():
@@ -14,16 +39,29 @@ def main():
 
     components_number, labels = cv2.connectedComponents(edges)
 
-    components = [[] for i in range(components_number)]
+    components = [[] for _ in range(components_number)]
     for i, row in enumerate(labels):
         for j, e in enumerate(row):
             if e != 0:
-                components[e].append((i, j))
+                components[e].append(Point(i, j))
 
     print(len(components))
     print(components)
+    saliences = []
+    for component in components:
+        saliences.append(count_salience(component, blur))
+    print(saliences)
+    saliences = [salience for salience in saliences]
+    max_value = max(saliences)
+    saliences_img = np.zeros(blur.shape)
+    for component, salience in zip(components, saliences):
+        if salience != max_value:
+            continue
+        for point in component:
+            saliences_img[point.x, point.y] = 255 * salience / max_value
+    cv2.imshow('saliences', saliences_img)
 
-    cv2.imshow('edges', edges)
+    # cv2.imshow('edges', edges)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
