@@ -1,10 +1,12 @@
+from signature_detection.feature_extractor import FeatureExtractor
+
+
 class Classifier:
-    def __init__(self,
-                 edges_detector: EdgesDetector):
-        self.__edges_detector = edges_detector
+    def __init__(self):
+        self.__feature_extractor = feature_extractor
 
     def fit(self, data, labels):
         ...
 
-    def predict(self, data):
+    def predict(self, data) -> bool:
         ...
