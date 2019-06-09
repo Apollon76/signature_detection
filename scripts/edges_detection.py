@@ -57,8 +57,9 @@ def main():
     # img = cv2.imread('../another_image.jpg', 0)
     # img = cv2.imread('../cropped.png', 0)
     # img = cv2.imread('../bad_quality.jpg', 0)
-    img = cv2.imread('../many_signatures.jpg', 0)
-    scale = 1
+    # img = cv2.imread('../many_signatures.jpg', 0)
+    img = cv2.imread('../data/00046211.tif', 0)
+    scale = 0.3
     img = cv2.resize(img, (0, 0), fx=scale, fy=scale, interpolation=cv2.INTER_LANCZOS4)
 
     blur_size = 9
@@ -82,7 +83,7 @@ def main():
         avg_dists.append(get_avg_dist(component))
     max_value = max(avg_dists)
     avg_dist_img = np.zeros(blur.shape)
-    for salience, component in sorted(zip(avg_dists, components), reverse=True)[:1]:
+    for salience, component in sorted(zip(avg_dists, components), reverse=True)[:5]:
         for point in component:
             avg_dist_img[point.x, point.y] = 255 * salience / max_value
     cv2.imshow('avg_dists', avg_dist_img)
