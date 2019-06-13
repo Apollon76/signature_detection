@@ -10,6 +10,7 @@ from signature_detection.feature_extractor import FeatureExtractor
 
 def main():
     data = pd.read_csv('../data/labels.csv')
+    data = data[:300]
     labels = data['has_signature'].apply(bool)
     names = data['name']
     images = [cv2.imread(f'../data/images/{name}.tif', 0) for name in tqdm.tqdm(names)]

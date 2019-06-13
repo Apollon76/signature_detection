@@ -36,9 +36,9 @@ class FeatureExtractor:
         main_candidate = max(components, key=lambda component: self.__get_avg_dist(component))
         left, right, top, bottom = get_bounding_box(main_candidate)
         return [
-            self.__get_avg_dist(main_candidate),
-            (top - bottom) / (right - left),
-            (top + bottom) / blurred.shape[0],
+            self.__restrict(self.__get_avg_dist(main_candidate)),
+            self.__restrict((top - bottom) / (right - left)),
+            self.__restrict((top + bottom) / blurred.shape[0]),
         ]
 
     @staticmethod
@@ -65,3 +65,7 @@ class FeatureExtractor:
             dist = min(dist, abs(point.y - bottom))
             total_dist += dist
         return total_dist / len(component)
+
+    @staticmethod
+    def __restrict(x: float) -> float:
+        return min(10 ** 9, max(-10 ** 9, x))
