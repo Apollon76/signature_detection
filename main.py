@@ -15,7 +15,7 @@ def main():
     #     return
 
     data = pd.read_csv('data/labels.csv')
-    data = data[300:500]
+    data = data[1000:1200]
     labels = data['has_signature'].apply(bool)
     names = data['name']
     images = [cv2.imread(f'data/images/{name}.tif', 0) for name in tqdm.tqdm(names)]

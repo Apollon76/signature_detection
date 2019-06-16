@@ -38,7 +38,7 @@ class FeatureExtractor:
         return [
             self.__restrict(self.__get_avg_dist(main_candidate)),
             self.__restrict((top - bottom) / (right - left)),
-            self.__restrict((top + bottom) / blurred.shape[0]),
+            self.__restrict((top + bottom) / 2 / blurred.shape[0]),
         ]
 
     @staticmethod
